@@ -1,0 +1,12 @@
+{
+  "actions" : {
+    "run" : {
+      "enabled" : true,
+      "script" : "open \"${TM_PROJECT_DIRECTORY}\/test\/SpecRunner.html\"\n"
+    }
+  },
+  "environment" : {
+    "TM_PROJECT_DIRECTORY" : "${WorkspaceFolder}"
+  },
+  "identifier" : "A0976C31-039D-4D35-A42B-03B0845E365B"
+}
