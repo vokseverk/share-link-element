@@ -41,12 +41,14 @@ class ShareLink extends HTMLElement {
 		let links = document.createElement('ul')
 
 		const facebook = new ShareLocation('Facebook', 'https://www.facebook.com/sharer/sharer.php', { u: this.shareUrl })
+		const twitter = new ShareLocation('Twitter (X)', 'https://twitter.com/intent/tweet/', { url: this.shareUrl })
 		const linkedIn = new ShareLocation('LinkedIn', 'https://www.linkedin.com/shareArticle', { mini: true, url: this.shareUrl })
 
 		const facebookLink = this.createExternalLink(facebook.getShareUrl(), facebook.name)
+		const twitterLink = this.createExternalLink(twitter.getShareUrl(), twitter.name)
 		const linkedInLink = this.createExternalLink(linkedIn.getShareUrl(), linkedIn.name)
 
-		Array.from([facebookLink, linkedInLink]).forEach(link => {
+		Array.from([facebookLink, twitterLink, linkedInLink]).forEach(link => {
 			let listItem = document.createElement('li')
 			listItem.appendChild(link)
 			links.appendChild(listItem)
@@ -70,4 +72,3 @@ class ShareLink extends HTMLElement {
 }
 
 customElements.define('share-link', ShareLink)
-
