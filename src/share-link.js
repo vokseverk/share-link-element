@@ -9,8 +9,6 @@ class ShareLink extends HTMLElement {
 
 	connectedCallback() {
 		const canShare = this.canUseWebShare(this.shareUrl)
-		const bgColor = canShare ? 'lime' : 'red'
-		console.info(`URL to share: ${this.shareUrl} (ok: ${canShare})`)
 
 		if (canShare) {
 			this.shadowRoot.appendChild(this.createShareButton())
