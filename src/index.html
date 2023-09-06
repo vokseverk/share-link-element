@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Test Page for Share Link</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<script type="module" src="share-link.js"></script>
+	<style>
+		a {
+			color: #06f;
+			text-decoration: underline;
+			text-underline-offset: 3px;
+			text-decoration-thickness: 2px;
+		}
+
+		main {
+			max-inline-size: 75%;
+			margin-inline: auto;
+			padding-block: 3rem;
+		}
+	</style>
+</head>
+<body>
+
+<main>
+	<p>
+		<a href="https://greystate.dk">A standard link</a>
+	</p>
+
+	<p>
+		<share-link label="Share this"><a href="https://greystate.dk?sæt=høst&amp;vest=nord">A link to my website</a></share-link>
+	</p>
+</main>
+
+</body>
+</html>
