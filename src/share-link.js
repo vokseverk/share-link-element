@@ -4,18 +4,34 @@ class ShareLink extends HTMLElement {
 	constructor() {
 		super()
 
-		this.attachShadow({ mode: 'open' })
+		this.canShare = false
+		this.shareUrl = null
+		this.shareLabel = ''
 	}
 
 	connectedCallback() {
-		const canShare = this.canUseWebShare(this.shareUrl)
-		const bgColor = canShare ? 'lime' : 'red'
-		console.info(`URL to share: ${this.shareUrl} (ok: ${canShare})`)
+		// Try to take URL + label from embedded link
+		if (this.childElementCount == 1 && this.firstElementChild.hasAttribute('href')) {
+			this.shareUrl = this.firstElementChild.getAttribute('href')
+			this.shareLabel = this.firstElementChild.textContent
+		}
 
-		if (canShare) {
-			this.shadowRoot.appendChild(this.createShareButton())
+		// Override URL, if specified
+		if (this.hasAttribute('url')) {
+			this.shareUrl = this.getAttribute('url')
+		}
+
+		// Override label, if specified
+		if (this.hasAttribute('label')) {
+			this.shareLabel = this.getAttribute('label')
+		}
+
+		this.canShare = this.shareUrl != null && this.canUseWebShare(this.shareUrl)
+
+		if (this.canShare) {
+			this.replaceChildren(this.createShareButton())
 		} else {
-			this.shadowRoot.appendChild(this.createFallbackLinks())
+			this.replaceChildren(this.createFallbackLinks())
 		}
 	}
 
@@ -28,6 +44,8 @@ class ShareLink extends HTMLElement {
 		shareButton.setAttribute('type', 'button')
 		let label = document.createElement('span')
 		label.textContent = this.shareLabel
+		shareButton.classList.add(...this.classList)
+		this.removeAttribute('class')
 		shareButton.appendChild(label)
 
 		shareButton.addEventListener('click', (event) => {
@@ -65,10 +83,6 @@ class ShareLink extends HTMLElement {
 		link.textContent = label
 		return link
 	}
-
-	get embeddedLink() { return this.firstElementChild }
-	get shareLabel() { return this.getAttribute('label') }
-	get shareUrl() { return this.embeddedLink.getAttribute('href') }
 }
 
 customElements.define('share-link', ShareLink)

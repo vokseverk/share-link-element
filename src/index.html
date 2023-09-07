@@ -18,18 +18,56 @@
 			margin-inline: auto;
 			padding-block: 3rem;
 		}
+
+		button {
+			padding: 0.8em 1.3em;
+			border: 2px solid;
+			border-radius: 0.8em;
+			background: transparent;
+			cursor: pointer;
+			font: inherit;
+		}
+
+		.btn {
+			background: orange;
+			font-weight: bold;
+		}
 	</style>
 </head>
 <body>
 
 <main>
+	<h2>Standard link for reference</h2>
 	<p>
-		<a href="https://greystate.dk">A standard link</a>
+		<a href="https://greystate.dk">A link to my website</a>
+	</p>
+
+	<h2><code>&lt;share-link&gt;</code> Samples</h2>
+	<p>
+		A basic <code>&lt;share-link&gt;</code> with a single link inside should adopt its
+		URL &amp; label from the embedded link:
+	</p>
+	<p>
+		<share-link>
+			<a href="https://greystate.dk?sæt=høst&amp;vest=nord">A link to my website</a>
+		</share-link>
 	</p>
 
 	<p>
-		<share-link label="Share this"><a href="https://greystate.dk?sæt=høst&amp;vest=nord">A link to my website</a></share-link>
+		Adding the <code>url</code> + <code>label</code> attributes enables using more
+		elaborate fallback content.
 	</p>
+
+	<div>
+		<share-link class="btn" url="https://greystate.dk?sæt=høst&amp;vest=nord" label="Share this">
+			<p>
+				Here's a link to my website for copying:
+				<code>https://greystate.dk?sæt=høst&amp;vest=nord</code>
+			</p>
+		</share-link>
+	</div>
+
+
 </main>
 
 </body>
