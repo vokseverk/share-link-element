@@ -1,4 +1,5 @@
 import ShareLocation from './share-location.js'
+import defaultServices from './share-defaults.js'
 
 class ShareLink extends HTMLElement {
 	constructor() {
@@ -58,17 +59,15 @@ class ShareLink extends HTMLElement {
 	createFallbackLinks() {
 		let links = document.createElement('ul')
 
-		const facebook = new ShareLocation('Facebook', 'https://www.facebook.com/sharer/sharer.php', { u: this.shareUrl })
-		const twitter = new ShareLocation('Twitter (X)', 'https://twitter.com/intent/tweet/', { url: this.shareUrl })
-		const linkedIn = new ShareLocation('LinkedIn', 'https://www.linkedin.com/shareArticle', { mini: true, url: this.shareUrl })
+		defaultServices.forEach(service => {
+			let serviceParams = service.params
+			service.params[service.urlParam] = this.shareUrl
 
-		const facebookLink = this.createExternalLink(facebook.getShareUrl(), facebook.name)
-		const twitterLink = this.createExternalLink(twitter.getShareUrl(), twitter.name)
-		const linkedInLink = this.createExternalLink(linkedIn.getShareUrl(), linkedIn.name)
+			const location = new ShareLocation(service.name, service.url, serviceParams)
+			const serviceLink = this.createExternalLink(location.getShareUrl(), location.name)
 
-		Array.from([facebookLink, twitterLink, linkedInLink]).forEach(link => {
 			let listItem = document.createElement('li')
-			listItem.appendChild(link)
+			listItem.appendChild(serviceLink)
 			links.appendChild(listItem)
 		})
 
