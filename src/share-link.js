@@ -44,6 +44,8 @@ class ShareLink extends HTMLElement {
 		shareButton.setAttribute('type', 'button')
 		let label = document.createElement('span')
 		label.textContent = this.shareLabel
+		shareButton.classList.add(...this.classList)
+		this.removeAttribute('class')
 		shareButton.appendChild(label)
 
 		shareButton.addEventListener('click', (event) => {
