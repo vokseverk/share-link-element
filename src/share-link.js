@@ -29,10 +29,22 @@ class ShareLink extends HTMLElement {
 
 		this.canShare = this.shareUrl != null && this.canUseWebShare(this.shareUrl)
 
+		let shareButton = this.createShareButton()
+		this.replaceChildren()
+		this.appendChild(shareButton)
+
 		if (this.canShare) {
-			this.replaceChildren(this.createShareButton())
+			shareButton.addEventListener('click', (event) => {
+				navigator.share({ url: this.shareUrl })
+			})
 		} else {
-			this.replaceChildren(this.createFallbackLinks())
+			const fallbackLinks = this.createFallbackLinks()
+			shareButton.addEventListener('click', (event) => {
+				const target = event.target.closest('button')
+				const state = target.getAttribute('aria-pressed') == 'true'
+				target.setAttribute('aria-pressed', !state)
+			})
+			this.appendChild(fallbackLinks)
 		}
 	}
 
@@ -43,16 +55,12 @@ class ShareLink extends HTMLElement {
 	createShareButton() {
 		let shareButton = document.createElement('button')
 		shareButton.setAttribute('type', 'button')
+		shareButton.setAttribute('aria-pressed', false)
 		let label = document.createElement('span')
 		label.textContent = this.shareLabel
 		shareButton.classList.add(...this.classList)
 		this.removeAttribute('class')
 		shareButton.appendChild(label)
-
-		shareButton.addEventListener('click', (event) => {
-			navigator.share({ url: this.shareUrl })
-		})
-
 		return shareButton
 	}
 

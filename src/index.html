@@ -32,6 +32,21 @@
 			background: orange;
 			font-weight: bold;
 		}
+
+		[aria-pressed=false] + * { display: none; }
+		[aria-pressed=true] + * {
+			display: flex;
+			list-style: none;
+			padding-inline: 1em;
+			padding-block: 1em;
+			flex-direction: column;
+			position: absolute;
+			background: white;
+			border: 2px solid;
+			transform: translate(1em, -1.5em);
+		}
+
+
 	</style>
 </head>
 <body>
