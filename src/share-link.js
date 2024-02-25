@@ -8,6 +8,7 @@ class ShareLink extends HTMLElement {
 		this.canShare = false
 		this.shareUrl = null
 		this.shareLabel = ''
+		this.enabled = !this.hasAttribute('disabled')
 	}
 
 	connectedCallback() {
@@ -27,23 +28,27 @@ class ShareLink extends HTMLElement {
 			this.shareLabel = this.getAttribute('label')
 		}
 
-		this.canShare = this.shareUrl != null && this.canUseWebShare(this.shareUrl)
+		this.canShare = this.enabled && this.shareUrl != null && this.canUseWebShare(this.shareUrl)
 
 		let shareButton = this.createShareButton()
+		shareButton.addEventListener('click', (event) => {
+			const target = event.target.closest('button')
+			const state = target.getAttribute('aria-pressed') == 'true'
+			target.setAttribute('aria-pressed', !state)
+		})
+
 		this.replaceChildren()
 		this.appendChild(shareButton)
 
 		if (this.canShare) {
 			shareButton.addEventListener('click', (event) => {
 				navigator.share({ url: this.shareUrl })
+				.finally(result => {
+					shareButton.setAttribute('aria-pressed', false)
+				})
 			})
 		} else {
 			const fallbackLinks = this.createFallbackLinks()
-			shareButton.addEventListener('click', (event) => {
-				const target = event.target.closest('button')
-				const state = target.getAttribute('aria-pressed') == 'true'
-				target.setAttribute('aria-pressed', !state)
-			})
 			this.appendChild(fallbackLinks)
 		}
 	}
@@ -79,6 +84,15 @@ class ShareLink extends HTMLElement {
 			links.appendChild(listItem)
 		})
 
+		let copyLink = document.createElement('a')
+		copyLink.setAttribute('href', '#copy')
+		copyLink.textContent = 'Copy'
+		copyLink.addEventListener('click', this.copyToClipboard.bind(this))
+
+		let copyItem = document.createElement('li')
+		copyItem.appendChild(copyLink)
+		links.appendChild(copyItem)
+
 		return links
 	}
 
@@ -90,6 +104,26 @@ class ShareLink extends HTMLElement {
 		link.textContent = label
 		return link
 	}
+
+	copyToClipboard(event) {
+		if (navigator.clipboard) {
+			navigator.clipboard.writeText(this.shareUrl).then((result) => {
+				this.dispatchShareEvent('didcopy')
+			}, (error) => {
+				this.dispatchShareEvent('didnotcopy')
+			})
+		}
+
+		event.preventDefault()
+	}
+
+	dispatchShareEvent(name) {
+		const event = new Event(`share:${name}`)
+		this.dispatchEvent(event)
+	}
 }
 
-customElements.define('share-link', ShareLink)
+
+export default function defineShareLink() {
+	customElements.define('share-link', ShareLink)
+}
