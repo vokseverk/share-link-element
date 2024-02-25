@@ -4,7 +4,6 @@
 	<meta charset="utf-8">
 	<title>Test Page for Share Link</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<script type="module" src="share-link.js"></script>
 	<style>
 		a {
 			color: #06f;
@@ -33,6 +32,12 @@
 			font-weight: bold;
 		}
 
+		[disabled] .btn {
+			background: tomato;
+		}
+
+		[aria-pressed=true] { opacity: 0.9; box-shadow: inset 2px 2px 2px 1px rgba(0, 0, 0, 0.45); }
+
 		[aria-pressed=false] + * { display: none; }
 		[aria-pressed=true] + * {
 			display: flex;
@@ -46,8 +51,12 @@
 			transform: translate(1em, -1.5em);
 		}
 
-
 	</style>
+
+	<script type="module">
+		import defineShareLink from './share-link.js'
+		defineShareLink()
+	</script>
 </head>
 <body>
 
@@ -75,6 +84,19 @@
 
 	<div>
 		<share-link class="btn" url="https://greystate.dk?sæt=høst&amp;vest=nord" label="Share this">
+			<p>
+				Here's a link to my website for copying:
+				<code>https://greystate.dk?sæt=høst&amp;vest=nord</code>
+			</p>
+		</share-link>
+	</div>
+
+	<p>
+		Adding a <code>disabled</code> attribute allows testing the fallback content.
+	</p>
+
+	<div>
+		<share-link disabled class="btn" url="https://greystate.dk?sæt=høst&amp;vest=nord" label="Share this">
 			<p>
 				Here's a link to my website for copying:
 				<code>https://greystate.dk?sæt=høst&amp;vest=nord</code>
