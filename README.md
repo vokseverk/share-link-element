@@ -21,16 +21,16 @@ element, e.g. to use the label "Share this" instead of "Link to this page" from 
 embedded link, do this:
 
 ```html
-<share-link label="Share this">
+<share-link data-label="Share this">
 	<a href="https://test.com/path/to/page">Link to this page</a>
 </share-link>
 ```
 
-Similarly, using the `url` attribute would allow you to modify the link destination, e.g.
+Similarly, using the `data-url` attribute would allow you to modify the link destination, e.g.
 for tracking purposes etc.:
 
 ```html
-<share-link url="https://test.com/path/to/page/?from=web-share-api" label="Share this link">
+<share-link data-url="https://test.com/path/to/page/?from=web-share-api" data-label="Share this link">
 	<a href="https://test.com/path/to/page/?from=no-js-fallback">Link to this page</a>
 </share-link>
 ```

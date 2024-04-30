@@ -19,13 +19,13 @@ class ShareLink extends HTMLElement {
 		}
 
 		// Override URL, if specified
-		if (this.hasAttribute('url')) {
-			this.shareUrl = this.getAttribute('url')
+		if ('url' in this.dataset) {
+			this.shareUrl = this.dataset.url
 		}
 
 		// Override label, if specified
-		if (this.hasAttribute('label')) {
-			this.shareLabel = this.getAttribute('label')
+		if ('label' in this.dataset) {
+			this.shareLabel = this.dataset.label
 		}
 
 		this.canShare = this.enabled && this.shareUrl != null && this.canUseWebShare(this.shareUrl)
