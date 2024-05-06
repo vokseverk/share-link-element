@@ -1,4 +1,4 @@
-# ShareLink Custom Element
+# &lt;share-link&gt; element
 
 This is a [Custom Element][CE] to handle sharing a URL using either the [Web Share API][WSA] or,
 if that's not available, a couple of default services' share URLs, so as to not have to
@@ -34,7 +34,6 @@ for tracking purposes etc.:
 	<a href="https://test.com/path/to/page/?from=no-js-fallback">Link to this page</a>
 </share-link>
 ```
-
 
 
 ## Notes
